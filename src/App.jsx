@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Inventory from './pages/Inventory';
+import Distribute from './pages/Distribute';
 import Navigation from './components/Navigation';
 import './App.css';
 
@@ -16,13 +17,13 @@ const NavLink = ({ to, children }) => {
 };
 
 function AppContent() {
-  // Category State එක මෙතන තියාගන්නවා
   const [currentCategory, setCurrentCategory] = useState('inventory');
+  
+  // මෙතන තිබුණු searchQuery අයින් කළා, දැන් ඒක පිටු ඇතුළෙමයි තියෙන්නේ
 
   return (
     <div className="app-container">
       
-      {/* Sidebar Area */}
       <div className="sidebar">
         <div className="sidebar-title">🏥 Hospital Store</div>
         <NavLink to="/">📦 ප්‍රධාන ඉන්වෙන්ට්‍රිය</NavLink>
@@ -30,34 +31,27 @@ function AppContent() {
         <NavLink to="/refill">📥 රීෆිල් වාර්තා</NavLink>
       </div>
 
-      {/* Main Content Area */}
       <div className="content">
-        
-        {/* Navigation එකට State එක යවනවා */}
+        {/* Navigation එකට යවන්නේ currentCategory පමණයි */}
         <Navigation 
           currentCategory={currentCategory} 
-          onCategoryChange={setCurrentCategory} 
+          onCategoryChange={setCurrentCategory}
         />
 
-        {/* PAGE CONTENT (Routes) */}
         <Routes>
-          {/* Inventory එකටත් State එක යවනවා */}
+          {/* පිටු වලටත් යවන්නේ currentCategory පමණයි */}
           <Route path="/" element={<Inventory currentCategory={currentCategory} />} />
-          <Route path="/distribute" element={<div className="card"><h2>බෙදාදීම් පිටුව</h2></div>} />
+          <Route path="/distribute" element={<Distribute currentCategory={currentCategory} />} />
           <Route path="/refill" element={<div className="card"><h2>රීෆිල් පිටුව</h2></div>} />
         </Routes>
-
       </div>
+
     </div>
   );
 }
 
 function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
+  return <Router><AppContent /></Router>;
 }
 
 export default App;
